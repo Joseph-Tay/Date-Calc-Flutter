@@ -35,7 +35,7 @@ class _DateAppState extends State<DateApp> {
   int calcdays;
   int testDiff;
 
-  calcYMD(dateStartvar, dateEndvar) {
+  _calcYMD(dateStartvar, dateEndvar) {
     setState(() {
       testDiff = dateEndvar.difference(dateStartvar).inDays;
       diff = dateEndvar.difference(dateStartvar);
@@ -81,181 +81,225 @@ class _DateAppState extends State<DateApp> {
     });
   }
 
+  void _startdatetap() {
+    showModalBottomSheet(
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).copyWith().size.height / 3,
+          child: CupertinoDatePicker(
+            initialDateTime: DateTime.now(),
+            onDateTimeChanged: (DateTime dateStart) {
+              // print(dateStart);
+              dateStartvar = dateStart;
+              // print(dateStartvar);
+              setState(() {
+                startdate = dateStart.day.toString() +
+                    '.' +
+                    dateStart.month.toString() +
+                    '.' +
+                    dateStart.year.toString() +
+                    ' ';
+              });
+            },
+            maximumDate: new DateTime(2100, 12, 30),
+            minimumYear: 1900,
+            maximumYear: 2100,
+            mode: CupertinoDatePickerMode.date,
+          ),
+        );
+      },
+      context: context,
+    );
+  }
+
+  void _enddatetap() {
+    showModalBottomSheet(
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).copyWith().size.height / 3,
+          child: CupertinoDatePicker(
+            initialDateTime: DateTime.now(),
+            onDateTimeChanged: (DateTime dateEnd) {
+              // print(dateEnd);
+              dateEndvar = dateEnd;
+              // print(dateEndvar);
+              setState(() {
+                enddate = dateEnd.day.toString() +
+                    '.' +
+                    dateEnd.month.toString() +
+                    '.' +
+                    dateEnd.year.toString() +
+                    ' ';
+              });
+            },
+            maximumDate: new DateTime(2100, 12, 30),
+            minimumYear: 1900,
+            maximumYear: 2100,
+            mode: CupertinoDatePickerMode.date,
+          ),
+        );
+      },
+      context: context,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          title: Text("Date Difference Calculator"),
+          backgroundColor: Colors.blueGrey[800],
+        ),
         body: Container(
+          margin: EdgeInsets.all(0),
           color: Colors.blueGrey,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Center(
-                              child: MaterialButton(
-                                child: Text(
-                                  "Start\nDate",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 30,
-                                    height: 1.15,
-                                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.width * 0.7,
+                child: Row(children: [
+                  Expanded(
+                    flex: 3,
+                    child: GestureDetector(
+                      onTap: _startdatetap,
+                      child: Container(
+                        color: Colors.blueGrey,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.blueGrey[900],
+                                  size: 60.0,
                                 ),
-                                color: Colors.blueGrey,
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: MediaQuery.of(context)
-                                                .copyWith()
-                                                .size
-                                                .height /
-                                            3,
-                                        child: CupertinoDatePicker(
-                                          initialDateTime: DateTime.now(),
-                                          onDateTimeChanged:
-                                              (DateTime dateStart) {
-                                            // print(dateStart);
-                                            dateStartvar = dateStart;
-                                            // print(dateStartvar);
-                                            setState(() {
-                                              startdate = dateStart.day
-                                                      .toString() +
-                                                  '/' +
-                                                  dateStart.month.toString() +
-                                                  '/' +
-                                                  dateStart.year.toString() +
-                                                  ' ';
-                                            });
-                                          },
-                                          maximumDate:
-                                              new DateTime(2100, 12, 30),
-                                          minimumYear: 1900,
-                                          maximumYear: 2100,
-                                          mode: CupertinoDatePickerMode.date,
-                                        ),
-                                      );
-                                    },
-                                    context: context,
-                                  );
-                                },
                               ),
-                            ),
-                            SizedBox(height: 15),
-                            startdate == null
-                                ? Container()
-                                : Text(
-                                    '$startdate',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
-                                      height: 1.15,
+                              SizedBox(height: 15),
+                              startdate == null
+                                  ? Container(
+                                      child: Text(' ',
+                                          style: TextStyle(
+                                              fontSize: 25, height: 1.15)))
+                                  : Text(
+                                      '$startdate',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        height: 1.15,
+                                      ),
                                     ),
-                                  ),
-                          ]),
-                      SizedBox(width: 20),
-                      Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Center(
-                              child: MaterialButton(
-                                child: Text(
-                                  "End\nDate",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 30,
-                                    height: 1.15,
-                                  ),
-                                ),
-                                color: Colors.blueGrey,
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: MediaQuery.of(context)
-                                                .copyWith()
-                                                .size
-                                                .height /
-                                            3,
-                                        child: CupertinoDatePicker(
-                                          initialDateTime: DateTime.now(),
-                                          onDateTimeChanged:
-                                              (DateTime dateEnd) {
-                                            // print(dateEnd);
-                                            dateEndvar = dateEnd;
-                                            // print(dateEndvar);
-                                            setState(() {
-                                              enddate = dateEnd.day.toString() +
-                                                  '/' +
-                                                  dateEnd.month.toString() +
-                                                  '/' +
-                                                  dateEnd.year.toString() +
-                                                  ' ';
-                                            });
-                                          },
-                                          maximumDate:
-                                              new DateTime(2100, 12, 30),
-                                          minimumYear: 1900,
-                                          maximumYear: 2100,
-                                          mode: CupertinoDatePickerMode.date,
-                                        ),
-                                      );
-                                    },
-                                    context: context,
-                                  );
-                                },
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            enddate == null
-                                ? Container()
-                                : Text(
-                                    '$enddate',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
-                                      height: 1.15,
-                                    ),
-                                  ),
-                          ]),
-                    ]),
-                SizedBox(height: 40),
-                SizedBox(height: 40),
-                MaterialButton(
-                  child: Text(
-                    "Calculate Difference",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                      height: 1.15,
+                            ]),
+                      ),
                     ),
                   ),
-                  color: Colors.blueGrey,
-                  onPressed: () => calcYMD(dateStartvar, dateEndvar),
-                ),
-                diff == null
-                    ? Container()
-                    : Text(
-                        '$calcyears $yearunit $calcmonths $monthunit $calcdays $dayunit',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          height: 1.15,
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Container(
+                            padding: EdgeInsets.all(0),
+                            child: Icon(
+                              Icons.compare_arrows,
+                              size: 50.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: GestureDetector(
+                      onTap: _enddatetap,
+                      child: Container(
+                        color: Colors.blueGrey,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Icon(
+                                  Icons.date_range,
+                                  color: Colors.blueGrey[900],
+                                  size: 60.0,
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              enddate == null
+                                  ? Container(
+                                      child: Text(' ',
+                                          style: TextStyle(
+                                              fontSize: 25, height: 1.15)))
+                                  : Text(
+                                      '$enddate',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        height: 1.15,
+                                      ),
+                                    ),
+                            ]),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.width * 0.5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _calcYMD(dateStartvar, dateEndvar),
+                        child: Container(
+                          color: Colors.blueGrey,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Icon(
+                                    Icons.calculate,
+                                    color: Colors.blueGrey[900],
+                                    size: 80.0,
+                                  ),
+                                ),
+                                SizedBox(height: 15),
+                                diff == null
+                                    ? Container(
+                                        child: Text(
+                                          ' ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 35,
+                                            height: 1.15,
+                                          ),
+                                        ),
+                                      )
+                                    : Text(
+                                        '$calcyears Y | $calcmonths M | $calcdays D',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 35,
+                                          height: 1.15,
+                                        ),
+                                      ),
+                              ]),
                         ),
                       ),
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
