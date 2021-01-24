@@ -7,6 +7,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'DateCalc',
+      theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       home: DateApp(),
     );
   }
@@ -29,6 +33,7 @@ class _DateAppState extends State<DateApp> {
   DateTime selectedDate = DateTime.now();
   DateTime dateEndvar;
   DateTime dateStartvar;
+  DateTime currentDate = DateTime.now();
 
   int calcyears;
   int calcmonths;
@@ -145,6 +150,7 @@ class _DateAppState extends State<DateApp> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -152,107 +158,110 @@ class _DateAppState extends State<DateApp> {
           backgroundColor: Colors.blueGrey[800],
         ),
         body: Container(
-          margin: EdgeInsets.all(0),
+          height: screenSize.height - 56,
+          width: screenSize.width,
           color: Colors.blueGrey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                height: MediaQuery.of(context).size.width * 0.7,
-                child: Row(children: [
-                  Expanded(
-                    flex: 3,
-                    child: GestureDetector(
-                      onTap: _startdatetap,
-                      child: Container(
-                        color: Colors.blueGrey,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Icon(
-                                  Icons.calendar_today,
-                                  color: Colors.blueGrey[900],
-                                  size: 60.0,
+                height: (screenSize.height) / 2,
+                width: screenSize.width,
+                color: Colors.transparent,
+                child: Expanded(
+                  child: Row(children: [
+                    Expanded(
+                      flex: 3,
+                      child: GestureDetector(
+                        onTap: _startdatetap,
+                        child: Container(
+                          color: Colors.blueGrey,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Icon(
+                                    Icons.calendar_today,
+                                    color: Colors.blueGrey[900],
+                                    size: 60.0,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 15),
-                              startdate == null
-                                  ? Container(
-                                      child: Text(' ',
-                                          style: TextStyle(
-                                              fontSize: 25, height: 1.15)))
-                                  : Text(
-                                      '$startdate',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25,
-                                        height: 1.15,
+                                SizedBox(height: 15),
+                                startdate == null
+                                    ? Container(
+                                        child: Text(' ',
+                                            style: TextStyle(
+                                                fontSize: 25, height: 1.15)))
+                                    : Text(
+                                        '$startdate',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25,
+                                          height: 1.15,
+                                        ),
                                       ),
-                                    ),
-                            ]),
+                              ]),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Container(
-                            padding: EdgeInsets.all(0),
-                            child: Icon(
-                              Icons.compare_arrows,
-                              size: 50.0,
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Container(
+                              child: Icon(
+                                Icons.compare_arrows,
+                                size: 50.0,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: GestureDetector(
-                      onTap: _enddatetap,
-                      child: Container(
-                        color: Colors.blueGrey,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Icon(
-                                  Icons.date_range,
-                                  color: Colors.blueGrey[900],
-                                  size: 60.0,
-                                ),
-                              ),
-                              SizedBox(height: 15),
-                              enddate == null
-                                  ? Container(
-                                      child: Text(' ',
-                                          style: TextStyle(
-                                              fontSize: 25, height: 1.15)))
-                                  : Text(
-                                      '$enddate',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25,
-                                        height: 1.15,
-                                      ),
-                                    ),
-                            ]),
+                        ],
                       ),
                     ),
-                  ),
-                ]),
+                    Expanded(
+                      flex: 3,
+                      child: GestureDetector(
+                        onTap: _enddatetap,
+                        child: Container(
+                          color: Colors.blueGrey,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Icon(
+                                    Icons.date_range,
+                                    color: Colors.blueGrey[900],
+                                    size: 60.0,
+                                  ),
+                                ),
+                                SizedBox(height: 15),
+                                enddate == null
+                                    ? Container(
+                                        child: Text(' ',
+                                            style: TextStyle(
+                                                fontSize: 25, height: 1.15)))
+                                    : Text(
+                                        '$enddate',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25,
+                                          height: 1.15,
+                                        ),
+                                      ),
+                              ]),
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
               ),
               Container(
-                height: MediaQuery.of(context).size.width * 0.5,
+                height: (screenSize.height / 2) - 56,
+                width: screenSize.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
